@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test de diagnostic</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .good { color: green; }
+        .bad { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnostic Netlify</h1>
+    <p class="good">✅ HTML se charge correctement</p>
+    <p class="good">✅ CSS se charge correctement</p>
+    
+    <div id="js-test" class="bad">❌ JavaScript ne s'est pas chargé</div>
+    
+    <h2>Tests JavaScript :</h2>
+    <div id="results"></div>
+    
+    <script>
+        // Test JavaScript basique
+        document.getElementById('js-test').innerHTML = '✅ JavaScript fonctionne !';
+        document.getElementById('js-test').className = 'good';
+        
+        const results = document.getElementById('results');
+        results.innerHTML += '<p class="good">✅ JavaScript basique OK</p>';
+        
+        // Test fetch vers Supabase
+        fetch('https://mzenjlhhchktynlvpjui.supabase.co/rest/v1/', {
+            headers: {
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16ZW5qbGhoY2hrdHlubHZwanVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1MjYwMDIsImV4cCI6MjA4NzEwMjAwMn0.QhZowVwu5hkwWgCWGkj7H-448r8TTdZF3qVuLVIdiG8'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                results.innerHTML += '<p class="good">✅ Connexion Supabase OK</p>';
+            } else {
+                results.innerHTML += '<p class="bad">❌ Problème Supabase: ' + response.status + '</p>';
+            }
+        })
+        .catch(error => {
+            results.innerHTML += '<p class="bad">❌ Erreur Supabase: ' + error.message + '</p>';
+        });
+        
+        // Afficher les erreurs
+        window.addEventListener('error', function(e) {
+            results.innerHTML += '<p class="bad">❌ Erreur JS: ' + e.message + ' (ligne ' + e.lineno + ')</p>';
+        });
+        
+        console.log('🚀 Test de diagnostic chargé avec succès');
+    </script>
+</body>
+</html>
