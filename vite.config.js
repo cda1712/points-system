@@ -1,13 +1,19 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
+// Configuration pour HTML statique - Bypass React temporairement
 export default defineConfig({
-  plugins: [react()],
   // Configuration pour GitHub Pages  
   base: process.env.NODE_ENV === 'production' ? '/points-system/' : '/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
-  }
+    assetsDir: 'assets',
+    // Copier l'index.html statique directement
+    rollupOptions: {
+      input: {
+        main: 'index.html'
+      }
+    }
+  },
+  // Pas de plugins React pour cette version
+  plugins: []
 })

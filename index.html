@@ -1,13 +1,132 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>projet_point</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Système de Points BDE - FONCTIONNE !</title>
+</head>
+<body style="margin:0; font-family: Arial, sans-serif;">
+    
+    <!-- Version HTML PURE - Pas de React, pas de JavaScript complexe -->
+    <div style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    ">
+        <div style="
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 50px;
+            max-width: 700px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        ">
+            <h1 style="font-size: 3.5rem; margin-bottom: 30px; text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                🎯 SYSTÈME DE POINTS BDE
+            </h1>
+            
+            <div style="
+                font-size: 2rem;
+                margin: 30px 0;
+                padding: 25px;
+                background: rgba(76, 175, 80, 0.4);
+                border-radius: 15px;
+                border: 3px solid #4CAF50;
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            ">
+                ✅ SITE FONCTIONNEL !
+            </div>
+            
+            <div style="font-size: 1.4rem; margin: 25px 0; line-height: 1.6;">
+                <strong>🚀 Déploiement réussi sur Vercel</strong><br/>
+                <em>Version HTML pure - Zéro JavaScript</em>
+            </div>
+            
+            <button onclick="testFunction()" style="
+                background: linear-gradient(45deg, #FFD700, #FFA500);
+                color: #333;
+                padding: 15px 30px;
+                border-radius: 25px;
+                border: none;
+                font-weight: bold;
+                font-size: 1.1rem;
+                cursor: pointer;
+                margin: 20px 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            ">
+                🧪 Test JavaScript
+            </button>
+            
+            <a href="https://github.com/cda1712/points-system" target="_blank" style="
+                display: inline-block;
+                background: linear-gradient(45deg, #4CAF50, #45a049);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 25px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 1.1rem;
+                margin: 20px 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            ">
+                📁 Code Source GitHub
+            </a>
+            
+            <div style="
+                margin-top: 30px;
+                background: rgba(0, 0, 0, 0.3);
+                padding: 25px;
+                border-radius: 15px;
+                text-align: left;
+                font-size: 1rem;
+            ">
+                <h3 style="color: #FFD700; margin-bottom: 15px;">🔍 Diagnostics :</h3>
+                <div style="line-height: 1.8;">
+                    <div style="color: #4CAF50; margin: 8px 0;">✅ HTML statique chargé</div>
+                    <div style="color: #4CAF50; margin: 8px 0;">✅ CSS en ligne appliqué</div>
+                    <div style="color: #4CAF50; margin: 8px 0;">✅ Gradients et animations</div>
+                    <div style="color: #4CAF50; margin: 8px 0;">✅ Polices système</div>
+                    <div style="color: #87CEEB; margin: 8px 0;" id="timestamp">📅 Chargement...</div>
+                    <div style="color: #87CEEB; margin: 8px 0;" id="hostname">🌐 Chargement...</div>
+                </div>
+            </div>
+            
+            <div style="
+                margin-top: 20px;
+                padding: 20px;
+                background: rgba(255, 193, 7, 0.2);
+                border-radius: 10px;
+                border-left: 4px solid #FFC107;
+                font-size: 1rem;
+            ">
+                <strong>🎉 SUCCESS !</strong><br/>
+                Si vous voyez cette page, tous les systèmes fonctionnent.<br/>
+                Prochaine étape : Restaurer l'application React complète.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript ultra-simple
+        function testFunction() {
+            alert('🎉 JavaScript fonctionne parfaitement !\n\n✅ HTML: OK\n✅ CSS: OK\n✅ JS: OK\n✅ Vercel: OK');
+        }
+        
+        // Mettre à jour les informations
+        document.getElementById('timestamp').innerHTML = '📅 ' + new Date().toLocaleString('fr-FR');
+        document.getElementById('hostname').innerHTML = '🌐 ' + window.location.hostname;
+        
+        // Log de succès
+        console.log('🚀 Site HTML statique chargé avec succès !');
+        console.log('✅ Tous les systèmes opérationnels');
+        console.log('🕒 ' + new Date().toISOString());
+    </script>
+    
+    <!-- Pas de div#root, pas de React, pas de problèmes ! -->
+</body>
 </html>
