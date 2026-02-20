@@ -1,5 +1,2 @@
-# Allow specific files to be served directly
-/diagnostic.html   /diagnostic.html   200
-
-# Redirect everything else to index.html for SPA routing  
+# SPA fallback - only redirect if no file exists
 /*    /index.html   200
