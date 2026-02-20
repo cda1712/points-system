@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Statique - BDE Points</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            max-width: 700px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeIn 1s ease-in;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            font-size: 2rem;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(76, 175, 80, 0.3);
+            border-radius: 15px;
+            border: 3px solid #4CAF50;
+            animation: glow 2s infinite alternate;
+        }
+        .info {
+            font-size: 1.3rem;
+            margin: 25px 0;
+            line-height: 1.6;
+        }
+        .diagnostics {
+            margin-top: 40px;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        .check {
+            padding: 8px 0;
+            font-size: 1.1rem;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .timestamp {
+            color: #87CEEB;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(76, 175, 80, 0.5); }
+            to { box-shadow: 0 0 30px rgba(76, 175, 80, 0.8); }
+        }
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid #FFC107;
+            color: #FFE082;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Système de Points BDE</h1>
+        
+        <div class="status">
+            ✅ FICHIER HTML STATIQUE FONCTIONNE !
+        </div>
+        
+        <div class="info">
+            <strong>🧪 Test de déploiement Netlify</strong><br>
+            <span style="opacity: 0.9">Version HTML pure - Sans JavaScript</span>
+        </div>
+        
+        <div class="warning">
+            ⚠️ <strong>Test de diagnostic</strong><br>
+            Si vous voyez cette page, Netlify fonctionne.<br>
+            Le problème vient du JavaScript React.
+        </div>
+        
+        <div class="diagnostics">
+            <h3 style="color: #FFD700; margin-bottom: 20px;">🔍 Diagnostics système :</h3>
+            
+            <div class="check">✅ Serveur Netlify actif</div>
+            <div class="check">✅ Fichier HTML servi correctement</div>
+            <div class="check">✅ CSS intégré fonctionnel</div>
+            <div class="check">✅ Animations CSS actives</div>
+            <div class="check">✅ Domaine configuré</div>
+            <div class="check">✅ HTTPS activé</div>
+            
+            <div class="timestamp">
+                📅 Généré le : <strong>20 février 2026 - 16:30</strong><br>
+                🌐 URL : <strong>benevolent-naiad-4cd8ac.netlify.app</strong><br>
+                🔧 Type : <strong>HTML Statique</strong><br>
+                💾 Taille : <strong>~4 KB</strong>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; font-size: 1.1rem; padding: 20px; background: rgba(33, 150, 243, 0.2); border-radius: 10px; border: 2px solid #2196F3;">
+            <strong>🎉 SUCCÈS !</strong><br>
+            Si cette page se charge, le problème était dans React/JavaScript.<br>
+            Nous pouvons maintenant corriger l'application principale.
+        </div>
+    </div>
+</body>
+</html>
