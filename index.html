@@ -9,22 +9,5 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
-    <!-- Diagnostic d'urgence en cas de problème -->
-    <script>
-      // Si React ne charge pas en 5 secondes, afficher un message d'erreur
-      setTimeout(() => {
-        const root = document.getElementById('root');
-        if (!root || !root.innerHTML.trim()) {
-          document.body.innerHTML = `
-            <div style="padding: 30px; background: #f44336; color: white; font-family: Arial;">
-              <h1>⚠️ Erreur de chargement React</h1>
-              <p>L'application React ne s'est pas chargée correctement.</p>
-              <p><strong>URL de secours HTML :</strong> <a href="/" style="color: #FFD700;">Version HTML statique</a></p>
-            </div>
-          `;
-        }
-      }, 5000);
-    </script>
   </body>
 </html>
