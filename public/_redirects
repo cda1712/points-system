@@ -1,5 +1,5 @@
-# Allow static HTML files to be served directly
-/*.html   200
+# Allow specific files to be served directly
+/diagnostic.html   /diagnostic.html   200
 
 # Redirect everything else to index.html for SPA routing  
 /*    /index.html   200
