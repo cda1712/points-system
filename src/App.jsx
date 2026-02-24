@@ -5,7 +5,7 @@ import './App.css'
 
 
 // COMPOSANT : Formulaire de participation
-const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, participateOnce, isLoading }) => (
+const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, association, setAssociation, participateOnce, isLoading }) => (
   <div className="container">
     <div className="animated-background">
       <div className="graffiti-trail trail-1"></div>
@@ -24,8 +24,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, pa
             className="ink-logo-image"
             style={{ 
               maxHeight: '150px', 
-              width: '150px',
-              filter: 'drop-shadow(0 0 10px rgba(102, 18, 240, 0.5))'
+              width: '150px'
             }}
           />
         </div>
@@ -42,7 +41,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, pa
               placeholder=" "
               value={nom}
               onChange={(e) => setNom(e.target.value)}
-              className="floating-input"
+              className={`floating-input ${nom ? 'has-value' : ''}`}
               required
             />
             <label htmlFor="nom" className="floating-label-text">Nom</label>
@@ -55,7 +54,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, pa
               placeholder=" "
               value={prenom}
               onChange={(e) => setPrenom(e.target.value)}
-              className="floating-input"
+              className={`floating-input ${prenom ? 'has-value' : ''}`}
               required
             />
             <label htmlFor="prenom" className="floating-label-text">Prénom</label>
@@ -68,10 +67,88 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, pa
               placeholder=" "
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="floating-input"
+              className={`floating-input ${email ? 'has-value' : ''}`}
               required
             />
             <label htmlFor="email" className="floating-label-text">Email</label>
+          </div>
+          
+          <div className="floating-label">
+            <input
+              id="association"
+              type="text"
+              placeholder=" "
+              value={association}
+              onChange={(e) => setAssociation(e.target.value)}
+              className={`floating-input ${association ? 'has-value' : ''}`}
+              list="associations-list"
+              autoComplete="off"
+              required
+            />
+            <datalist id="associations-list">
+              <option value="AMMA" />
+              <option value="ADA" />
+              <option value="Aviron" />
+              <option value="Club entrepreneurs" />
+              <option value="Comedia" />
+              <option value="Davincibot" />
+              <option value="Davincicode" />
+              <option value="Junior Partners" />
+              <option value="Devdu" />
+              <option value="Fablab" />
+              <option value="Devincitrip" />
+              <option value="Devincilumière" />
+              <option value="Digiteam" />
+              <option value="ESN" />
+              <option value="Étoile" />
+              <option value="GOD" />
+              <option value="Hydrovinci" />
+              <option value="Kryptosphère" />
+              <option value="Extreme" />
+              <option value="LDV Esport" />
+              <option value="La 404" />
+              <option value="La Plume" />
+              <option value="La Joute" />
+              <option value="LéoIndieGames" />
+              <option value="Léosphère" />
+              <option value="Léosurvival" />
+              <option value="Léonart" />
+              <option value="Five" />
+              <option value="LKW" />
+              <option value="Léorunning" />
+              <option value="Tactical" />
+              <option value="Leo&co" />
+              <option value="Léo4L" />
+              <option value="Léobasket" />
+              <option value="Léocook" />
+              <option value="Léofly" />
+              <option value="Léostunt" />
+              <option value="Léotaku" />
+              <option value="Léotalks" />
+              <option value="Léovoile" />
+              <option value="Léovolley" />
+              <option value="Léoworkout" />
+              <option value="Léoclimb" />
+              <option value="Léoublon" />
+              <option value="Maison de vinci" />
+              <option value="Musiquemix" />
+              <option value="Poletech" />
+              <option value="SAFE" />
+              <option value="Slide Session" />
+              <option value="3V" />
+              <option value="Vinci Cheer" />
+              <option value="VED" />
+              <option value="Vinci investments" />
+              <option value="VRT" />
+              <option value="Vinci squad" />
+              <option value="Lavague" />
+              <option value="Léorugby" />
+              <option value="Végas" />
+              <option value="IIMPACT" />
+              <option value="Léolearning" />
+              <option value="Virtual vinci" />
+            </datalist>
+            <label htmlFor="association" className="floating-label-text">Association à soutenir</label>
           </div>
         </div>
 
@@ -91,7 +168,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, pa
 )
 
 // COMPOSANT : Message de remerciement
-const ThankYouMessage = ({ participantInfo, setShowRanking }) => (
+const ThankYouMessage = ({ participantInfo, setShowRanking, setShowAssociationRanking }) => (
   <div className="container">
     <div className="animated-background">
       <div className="graffiti-trail trail-1"></div>
@@ -105,7 +182,8 @@ const ThankYouMessage = ({ participantInfo, setShowRanking }) => (
       <div className="success-animation">
         <div className="ink-drop">
             <img src={logoImage} 
-            alt="Logo INK" />
+            alt="Logo INK" 
+            className="ink-logo-image" />
         </div>
         <div className="ripple"></div>
       </div>
@@ -115,8 +193,9 @@ const ThankYouMessage = ({ participantInfo, setShowRanking }) => (
         <div className="participant-info">
           <p className="participant-name">{participantInfo?.prenom} {participantInfo?.nom}</p>
           <div className="points-display">
-            <span className="points-number">{participantInfo?.points}</span>
-            <span className="points-label">point{participantInfo?.points > 1 ? 's' : ''}</span>
+            <span className="points-number">
+              {participantInfo?.points} {participantInfo?.points > 1 ? 'points' : 'point'}
+            </span>
           </div>
         </div>
         
@@ -126,15 +205,50 @@ const ThankYouMessage = ({ participantInfo, setShowRanking }) => (
             : 'Votre score continue de grandir !'
           }
         </p>
+        
+        {participantInfo?.association && (
+          <div className="association-info">
+            <h3>Vous soutenez :</h3>
+            <p className="association-name">{participantInfo.association}</p>
+          </div>
+        )}
       </div>
 
-      <button 
-        className="ranking-btn"
-        onClick={() => setShowRanking(true)}
-      >
-        <span>Découvrir le classement</span>
-        <div className="btn-glow"></div>
-      </button>
+      <div className="buttons-container">
+        <button 
+          className="ranking-btn"
+          onClick={() => setShowRanking(true)}
+        >
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="ink-logo-image"
+            style={{ 
+              maxHeight: '30px', 
+              width: '30px',
+              marginRight: '10px'
+            }}
+          />
+          Classement Utilisateurs
+        </button>
+        
+        <button 
+          className="ranking-btn association-btn"
+          onClick={() => setShowAssociationRanking(true)}
+        >
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="ink-logo-image"
+            style={{ 
+              maxHeight: '30px', 
+              width: '30px',
+              marginRight: '10px'
+            }}
+          />
+          Classement Associations
+        </button>
+      </div>
     </div>
   </div>
 )
@@ -166,8 +280,7 @@ const RankingView = ({ users, participantInfo, setShowRanking }) => (
             style={{ 
               maxHeight: '90px', 
               width: '90px',
-              marginRight: '125px',
-              filter: 'drop-shadow(0 0 10px rgba(102, 18, 240, 0.5))'
+              marginRight: '125px'
             }}
           />
           Classement
@@ -212,14 +325,91 @@ const RankingView = ({ users, participantInfo, setShowRanking }) => (
   </div>
 )
 
+// COMPOSANT : Classement des associations
+const AssociationsRanking = ({ associations, participantInfo, setShowAssociationRanking }) => (
+  <div className="container">
+    <div className="animated-background">
+      <div className="graffiti-trail trail-1"></div>
+      <div className="graffiti-trail trail-2"></div>
+      <div className="graffiti-trail trail-3"></div>
+      <div className="graffiti-trail trail-4"></div>
+      <div className="graffiti-trail trail-5"></div>
+    </div>
+    
+    <div className="ranking-card">
+      <button 
+        className="back-btn"
+        onClick={() => setShowAssociationRanking(false)}
+      >
+        ← Retour
+      </button>
+      
+      <div className="ranking-header">
+        <h1 className="ranking-title">
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="ink-logo-image"
+            style={{ 
+              maxHeight: '90px', 
+              width: '90px',
+              marginRight: '125px'
+            }}
+          />
+          Classement Associations
+        </h1>
+      </div>
+
+      <div className="ranking-list">
+        {associations.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-ink"></div>
+            <p>Aucune association soutenue pour le moment...</p>
+          </div>
+        ) : (
+          associations.map((association, index) => (
+            <div 
+              key={association.name}
+              className={`ranking-item ${index < 3 ? 'podium' : ''} ${participantInfo?.association === association.name ? 'current-user' : ''}`}
+            >
+              <div className="rank-badge">
+                {index === 0 ? '🏆' : 
+                 index === 1 ? '🥈' : 
+                 index === 2 ? '🥉' : 
+                 index + 1}
+              </div>
+              
+              <div className="user-info">
+                <span className="user-name">{association.name}</span>
+                <span className="supporters-count">{association.supporters} supporter{association.supporters > 1 ? 's' : ''}</span>
+                {participantInfo?.association === association.name && (
+                  <span className="current-indicator">votre choix</span>
+                )}
+              </div>
+              
+              <div className="points-badge">
+                <span className="points">{association.totalPoints}</span>
+                <span className="ink-trail"></span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  </div>
+)
+
 function App() {
   const [nom, setNom] = useState('')
   const [prenom, setPrenom] = useState('')
   const [email, setEmail] = useState('')
+  const [association, setAssociation] = useState('')
   const [users, setUsers] = useState([])
+  const [associations, setAssociations] = useState([])
   const [hasParticipated, setHasParticipated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [showRanking, setShowRanking] = useState(false)
+  const [showAssociationRanking, setShowAssociationRanking] = useState(false)
   const [participantInfo, setParticipantInfo] = useState(null)
 
   // Vérifier si l'utilisateur a déjà participé dans cette session
@@ -234,10 +424,10 @@ function App() {
 
   // Participer une seule fois
   const participateOnce = async () => {
-    console.log('🚀 Début participation - Email:', email, 'Nom:', nom, 'Prénom:', prenom)
+    console.log('🚀 Début participation - Email:', email, 'Nom:', nom, 'Prénom:', prenom, 'Association:', association)
     
-    if (!email || !nom || !prenom) {
-      alert('Veuillez remplir tous les champs (nom, prénom et email)')
+    if (!email || !nom || !prenom || !association) {
+      alert('Veuillez remplir tous les champs (nom, prénom, email et association)')
       return
     }
 
@@ -262,11 +452,14 @@ function App() {
       }
 
       if (existing) {
-        // Utilisateur existe déjà - ajoute 1 point
-        console.log('👤 Utilisateur trouvé, ajout de 1 point...', existing)
+        // Utilisateur existe déjà - ajoute 1 point et met à jour l'association
+        console.log('👤 Utilisateur trouvé, ajout de 1 point et mise à jour association...', existing)
         const { data: updateData, error: updateError } = await supabase
           .from('users')
-          .update({ points: existing.points + 1 })
+          .update({ 
+            points: existing.points + 1,
+            association_supportee: association
+          })
           .eq('id', existing.id)
           .select()
 
@@ -284,6 +477,7 @@ function App() {
           nom: existing.nom,
           prenom: existing.prenom,
           email: existing.email,
+          association: association,
           points: existing.points + 1,
           isNewUser: false
         }
@@ -297,7 +491,13 @@ function App() {
         console.log('➕ Création nouvel utilisateur...')
         const { data: insertData, error: insertError } = await supabase
           .from('users')
-          .insert([{ nom, prenom, email, points: 1 }])
+          .insert([{ 
+            nom, 
+            prenom, 
+            email, 
+            points: 1, 
+            association_supportee: association 
+          }])
           .select()
 
         console.log('📝 Résultat création:', { insertData, insertError })
@@ -314,6 +514,7 @@ function App() {
           nom,
           prenom,
           email,
+          association,
           points: 1,
           isNewUser: true
         }
@@ -323,9 +524,10 @@ function App() {
         setHasParticipated(true)
       }
 
-      // Met à jour le classement
-      console.log('🔄 Mise à jour du classement...')
+      // Met à jour les classements
+      console.log('🔄 Mise à jour des classements...')
       fetchUsers()
+      fetchAssociations()
 
     } catch (err) {
       console.error('💥 Erreur inattendue:', err)
@@ -346,8 +548,46 @@ function App() {
     else setUsers(data)
   }
 
+  // Récupérer le classement des associations
+  const fetchAssociations = async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('association_supportee, points')
+      .not('association_supportee', 'is', null)
+      .not('association_supportee', 'eq', '')
+
+    if (error) {
+      console.error('Erreur fetchAssociations:', error)
+      return
+    }
+
+    // Regrouper par association et calculer les points totaux
+    const associationMap = {}
+    data.forEach(user => {
+      const association = user.association_supportee
+      if (association) {
+        if (!associationMap[association]) {
+          associationMap[association] = {
+            name: association,
+            totalPoints: 0,
+            supporters: 0
+          }
+        }
+        associationMap[association].totalPoints += user.points
+        associationMap[association].supporters += 1
+      }
+    })
+
+    // Convertir en array et trier par points décroissants
+    const associationsArray = Object.values(associationMap)
+      .sort((a, b) => b.totalPoints - a.totalPoints)
+
+    setAssociations(associationsArray)
+  }
+
   useEffect(() => {
     fetchUsers()
+    fetchAssociations()
   }, [])
 
   // RENDU PRINCIPAL
@@ -359,10 +599,17 @@ function App() {
           participantInfo={participantInfo}
           setShowRanking={setShowRanking}
         />
+      ) : showAssociationRanking ? (
+        <AssociationsRanking 
+          associations={associations}
+          participantInfo={participantInfo}
+          setShowAssociationRanking={setShowAssociationRanking}
+        />
       ) : hasParticipated ? (
         <ThankYouMessage 
           participantInfo={participantInfo}
           setShowRanking={setShowRanking}
+          setShowAssociationRanking={setShowAssociationRanking}
         />
       ) : (
         <ParticipationForm 
@@ -372,6 +619,8 @@ function App() {
           setPrenom={setPrenom}
           email={email}
           setEmail={setEmail}
+          association={association}
+          setAssociation={setAssociation}
           participateOnce={participateOnce}
           isLoading={isLoading}
         />
