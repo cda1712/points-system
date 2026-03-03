@@ -3,16 +3,20 @@ import { supabase } from './lib/supabaseClient'
 import logoImage from './assets/Logo Blanc (3).png'
 import './App.css'
 
+const BackgroundTrails = () => (
+  <>
+    {Array.from({ length: 9 }, (_, index) => (
+      <div key={index + 1} className={`graffiti-trail trail-${index + 1}`}></div>
+    ))}
+  </>
+)
+
 
 // COMPOSANT : Formulaire de participation
 const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, association, setAssociation, participateOnce, isLoading }) => (
   <div className="container">
     <div className="animated-background">
-      <div className="graffiti-trail trail-1"></div>
-      <div className="graffiti-trail trail-2"></div>
-      <div className="graffiti-trail trail-3"></div>
-      <div className="graffiti-trail trail-4"></div>
-      <div className="graffiti-trail trail-5"></div>
+      <BackgroundTrails />
     </div>
     
     <div className="participation-card">
@@ -171,11 +175,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
 const ThankYouMessage = ({ participantInfo, setShowRanking, setShowAssociationRanking }) => (
   <div className="container">
     <div className="animated-background">
-      <div className="graffiti-trail trail-1"></div>
-      <div className="graffiti-trail trail-2"></div>
-      <div className="graffiti-trail trail-3"></div>
-      <div className="graffiti-trail trail-4"></div>
-      <div className="graffiti-trail trail-5"></div>
+      <BackgroundTrails />
     </div>
     
     <div className="thank-you-card">
@@ -257,34 +257,29 @@ const ThankYouMessage = ({ participantInfo, setShowRanking, setShowAssociationRa
 const RankingView = ({ users, participantInfo, setShowRanking }) => (
   <div className="container">
     <div className="animated-background">
-      <div className="graffiti-trail trail-1"></div>
-      <div className="graffiti-trail trail-2"></div>
-      <div className="graffiti-trail trail-3"></div>
-      <div className="graffiti-trail trail-4"></div>
-      <div className="graffiti-trail trail-5"></div>
+      <BackgroundTrails />
     </div>
     
     <div className="ranking-card">
-      <div className="ranking-header">
+      <div className="ranking-header standard-ranking-header users-ranking-header">
         <button 
-          className="back-btn"
+          className="back-btn standard-back-btn"
           onClick={() => setShowRanking(false)}
         >
           ← Retour
         </button>
-        <h1 className="ranking-title">
-          <img 
-            src={logoImage} 
-            alt="Logo INK" 
-            className="ink-logo-image"
-            style={{ 
-              maxHeight: '90px', 
-              width: '90px',
-              marginRight: '125px'
-            }}
-          />
-          Classement
+        <h1 className="ranking-title users-ranking-title">
+          Classement Utilisateurs
         </h1>
+        <img 
+          src={logoImage} 
+          alt="Logo INK" 
+          className="ink-logo-image users-ranking-logo header-side-logo"
+          style={{ 
+            maxHeight: '90px', 
+            width: '90px'
+          }}
+        />
       </div>
 
       <div className="ranking-list">
@@ -329,35 +324,29 @@ const RankingView = ({ users, participantInfo, setShowRanking }) => (
 const AssociationsRanking = ({ associations, participantInfo, setShowAssociationRanking }) => (
   <div className="container">
     <div className="animated-background">
-      <div className="graffiti-trail trail-1"></div>
-      <div className="graffiti-trail trail-2"></div>
-      <div className="graffiti-trail trail-3"></div>
-      <div className="graffiti-trail trail-4"></div>
-      <div className="graffiti-trail trail-5"></div>
+      <BackgroundTrails />
     </div>
     
     <div className="ranking-card">
-      <button 
-        className="back-btn"
-        onClick={() => setShowAssociationRanking(false)}
-      >
-        ← Retour
-      </button>
-      
-      <div className="ranking-header">
-        <h1 className="ranking-title">
-          <img 
-            src={logoImage} 
-            alt="Logo INK" 
-            className="ink-logo-image"
-            style={{ 
-              maxHeight: '90px', 
-              width: '90px',
-              marginRight: '125px'
-            }}
-          />
-          Classement Associations
+      <div className="ranking-header standard-ranking-header association-ranking-header">
+        <button 
+          className="back-btn standard-back-btn"
+          onClick={() => setShowAssociationRanking(false)}
+        >
+          ← Retour
+        </button>
+        <h1 className="ranking-title association-ranking-title">
+          Classements associations
         </h1>
+        <img 
+          src={logoImage} 
+          alt="Logo INK" 
+          className="ink-logo-image association-ranking-logo header-side-logo"
+          style={{ 
+            maxHeight: '90px', 
+            width: '90px'
+          }}
+        />
       </div>
 
       <div className="ranking-list">
@@ -399,6 +388,135 @@ const AssociationsRanking = ({ associations, participantInfo, setShowAssociation
   </div>
 )
 
+// COMPOSANT : Classement Secret (Alternance automatique)
+const SecretRankingView = ({ users, associations, participantInfo, setShowSecretRanking, secretViewMode }) => {
+  // Gestion de la classe full-screen sur le body
+  useEffect(() => {
+    document.body.classList.add('secret-ranking-active')
+    return () => {
+      document.body.classList.remove('secret-ranking-active')
+    }
+  }, [])
+
+  return (
+    <div className="container">
+      <div className="animated-background">
+        <BackgroundTrails />
+      </div>
+      
+      <div className="ranking-card secret-ranking-card">
+        <div className="ranking-header">
+          <button 
+            className="back-btn"
+            onClick={() => setShowSecretRanking(false)}
+          >
+            ← Retour
+          </button>
+          <h1 className="ranking-title centered-title">
+            {secretViewMode === 'users' ? 'Classement Participants' : 'Classement Associations'}
+          </h1>
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="ink-logo-image header-logo"
+            style={{ 
+              maxHeight: '90px', 
+              width: '90px'
+            }}
+          />
+        </div>
+
+        {secretViewMode === 'users' ? (
+          <div className="multi-columns-ranking">
+            {Array.from({ length: 4 }, (_, columnIndex) => {
+              const startIndex = columnIndex * 8
+              const endIndex = startIndex + 8
+              const columnUsers = users.slice(startIndex, endIndex)
+              
+              if (columnUsers.length === 0) return null
+              
+              return (
+                <div key={columnIndex} className="ranking-list">
+                  {columnUsers.map((user, index) => {
+                    const globalIndex = startIndex + index
+                    const isCurrentUser = participantInfo?.email === user.email
+                    const isPodium = globalIndex < 3
+                    return (
+                      <div key={user.id} className={`ranking-item ${isPodium ? 'podium' : ''} ${isCurrentUser ? 'current-user' : ''}`}>
+                        <div className="rank-badge">
+                          {globalIndex === 0 ? '🏆' : 
+                           globalIndex === 1 ? '🥈' : 
+                           globalIndex === 2 ? '🥉' : 
+                           globalIndex + 1}
+                        </div>
+                        
+                        <div className="user-info">
+                          <span className="user-name">{user.nom} {user.prenom}</span>
+                          {isCurrentUser && (
+                            <span className="current-indicator">vous</span>
+                          )}
+                        </div>
+                        
+                        <div className="points-badge">
+                          <span className="points">{user.points}</span>
+                          <span className="ink-trail"></span>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            }).filter(Boolean)}
+          </div>
+        ) : (
+          <div className="multi-columns-ranking">
+            {Array.from({ length: 4 }, (_, columnIndex) => {
+              const startIndex = columnIndex * 8
+              const endIndex = startIndex + 8
+              const columnAssociations = associations.slice(startIndex, endIndex)
+              
+              if (columnAssociations.length === 0) return null
+              
+              return (
+                <div key={columnIndex} className="ranking-list">
+                  {columnAssociations.map((association, index) => {
+                    const globalIndex = startIndex + index
+                    const isCurrentUser = participantInfo?.association === association.name
+                    const isPodium = globalIndex < 3
+                    return (
+                      <div key={association.name} className={`ranking-item ${isPodium ? 'podium' : ''} ${isCurrentUser ? 'current-user' : ''}`}>
+                        <div className="rank-badge">
+                          {globalIndex === 0 ? '🏆' : 
+                           globalIndex === 1 ? '🥈' : 
+                           globalIndex === 2 ? '🥉' : 
+                           globalIndex + 1}
+                        </div>
+                        
+                        <div className="user-info">
+                          <span className="user-name">{association.name}</span>
+                          <span className="supporters-count">{association.supporters} supporter{association.supporters > 1 ? 's' : ''}</span>
+                          {isCurrentUser && (
+                            <span className="current-indicator">votre choix</span>
+                          )}
+                        </div>
+                        
+                        <div className="points-badge">
+                          <span className="points">{association.totalPoints}</span>
+                          <span className="ink-trail"></span>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            }).filter(Boolean)}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function App() {
   const [nom, setNom] = useState('')
   const [prenom, setPrenom] = useState('')
@@ -410,6 +528,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [showRanking, setShowRanking] = useState(false)
   const [showAssociationRanking, setShowAssociationRanking] = useState(false)
+  const [showSecretRanking, setShowSecretRanking] = useState(false)
+  const [secretViewMode, setSecretViewMode] = useState('users') // 'users' ou 'associations'
   const [participantInfo, setParticipantInfo] = useState(null)
 
   // Vérifier si l'utilisateur a déjà participé dans cette session
@@ -590,10 +710,49 @@ function App() {
     fetchAssociations()
   }, [])
 
+  // Raccourci clavier secret CTRL+ALT+T
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.altKey && event.key === 't') {
+        event.preventDefault()
+        console.log('🔓 Raccourci secret activé !')
+        setShowSecretRanking(true)
+        setShowRanking(false)
+        setShowAssociationRanking(false)
+      }
+      // Escape pour fermer la vue secrète
+      if (event.key === 'Escape' && showSecretRanking) {
+        setShowSecretRanking(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showSecretRanking])
+
+  // Alternance automatique dans la vue secrète (5 secondes)
+  useEffect(() => {
+    if (!showSecretRanking) return
+
+    const interval = setInterval(() => {
+      setSecretViewMode(current => current === 'users' ? 'associations' : 'users')
+    }, 10_000)
+
+    return () => clearInterval(interval)
+  }, [showSecretRanking])
+
   // RENDU PRINCIPAL
   return (
     <>
-      {showRanking ? (
+      {showSecretRanking ? (
+        <SecretRankingView 
+          users={users}
+          associations={associations}
+          participantInfo={participantInfo}
+          setShowSecretRanking={setShowSecretRanking}
+          secretViewMode={secretViewMode}
+        />
+      ) : showRanking ? (
         <RankingView 
           users={users}
           participantInfo={participantInfo}
