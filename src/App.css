@@ -473,9 +473,10 @@ body {
 
 .points-display {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   margin-bottom: 1rem;
 }
 
@@ -484,6 +485,13 @@ body {
   font-weight: 700;
   color: #f034a4;
   text-shadow: 0 0 20px rgba(240, 52, 164, 0.5);
+}
+
+.earned-points {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  margin-top: 5px;
 }
 
 .points-label {
@@ -1580,6 +1588,220 @@ body.secret-ranking-active {
   50% { background-position: 100% 50%; }
 }
 
+/* ===== STYLES POPUP MOT DE PASSE ===== */
+.password-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.password-popup {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 2px solid #444;
+  border-radius: 20px;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.4s ease-out;
+}
+
+.popup-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.popup-logo {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.popup-header h2 {
+  color: white;
+  font-family: 'Coolvetica', sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.close-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: #ff6666;
+  transform: scale(1.1);
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-container {
+  position: relative;
+}
+
+.password-input {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #444;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.password-input:focus {
+  border-color: #00ff88;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.password-input::placeholder {
+  color: #999;
+}
+
+.validate-btn {
+  background: linear-gradient(135deg, #00ff88, #00cc6a);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.validate-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.validate-btn:hover:before {
+  left: 100%;
+}
+
+.validate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+}
+
+.error-message {
+  color: #ff4444;
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: 8px;
+  margin-top: -10px;
+}
+
+/* ===== STYLES POPUP CHOIX DE POINTS ===== */
+.points-choice-popup {
+  max-width: 600px;
+}
+
+.points-selection h3 {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.points-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.points-btn {
+  background: linear-gradient(135deg, #333, #555);
+  color: white;
+  border: 2px solid #666;
+  padding: 15px 10px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.points-btn:hover {
+  background: linear-gradient(135deg, #00ff88, #00cc6a);
+  border-color: #00ff88;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 255, 136, 0.3);
+}
+
+.points-btn:active {
+  transform: translateY(0);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-50px) scale(0.9); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
 /* Responsive pour les colonnes sur petits écrans */
 @media (max-width: 1200px) {
   .multi-columns-ranking {
@@ -1591,10 +1813,32 @@ body.secret-ranking-active {
   .multi-columns-ranking {
     grid-template-columns: repeat(2, 1fr) !important;
   }
+  
+  .password-popup {
+    padding: 30px 20px;
+  }
+  
+  .points-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
 }
 
 @media (max-width: 600px) {
   .multi-columns-ranking {
     grid-template-columns: 1fr !important;
+  }
+  
+  .password-popup {
+    width: 95%;
+    padding: 25px 15px;
+  }
+  
+  .popup-header h2 {
+    font-size: 20px;
+  }
+  
+  .points-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

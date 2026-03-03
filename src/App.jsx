@@ -3,6 +3,21 @@ import { supabase } from './lib/supabaseClient'
 import logoImage from './assets/Logo Blanc (3).png'
 import './App.css'
 
+// Configuration des codes secrets et points par stand
+const STAND_CODES = {
+  'InkQG': { name: 'Stand Accueil INK – QG', points: [100, 200, 300, 400] },
+  'InkJS': { name: 'Jelly Shot – Mystery Flavors', points: [100] },
+  'InkQB': { name: 'Quiz avec Buzzer – Duel Chromatique', points: [200, 100] },
+  'InkS': { name: 'JEUX VIDEO - SPLATOON', points: [100] },
+  'InkEG': { name: 'Escape Game – Mission Infiltration', points: [500, 400, 300, 200, 100] },
+  'InkT': { name: 'Tatouages – Ink Yourself', points: [200] },
+  'InkFC': { name: 'FLipCup: 1v1', points: [200, 50] },
+  'InkTI': { name: 'Trouve l\'Intru – Focus Challenge', points: [100, 50] },
+  'InkWP': { name: 'Waterpong: 3v3', points: [200, 100] },
+  'InkCT': { name: 'Chamboule-tout', points: [300, 200, 100] },
+  'InkFI': { name: 'FRESQUE DE INK', points: [100] }
+}
+
 const BackgroundTrails = () => (
   <>
     {Array.from({ length: 9 }, (_, index) => (
@@ -11,9 +26,119 @@ const BackgroundTrails = () => (
   </>
 )
 
+// COMPOSANT : Pop-up mot de passe
+const PasswordPopup = ({ isOpen, onClose, onValidatePassword }) => {
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!password.trim()) {
+      setError('Veuillez entrer un mot de passe')
+      return
+    }
+
+    const standInfo = STAND_CODES[password.trim()]
+    if (!standInfo) {
+      setError('Code secret invalide')
+      return
+    }
+
+    onValidatePassword(password.trim(), standInfo)
+    setPassword('')
+    setError('')
+  }
+
+  const handleClose = () => {
+    setPassword('')
+    setError('')
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="password-overlay">
+      <div className="password-popup">
+        <div className="popup-header">
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="popup-logo"
+          />
+          <h2>Code Secret du Stand</h2>
+          <button className="close-btn" onClick={handleClose}>×</button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="password-form">
+          <div className="input-container">
+            <input
+              type="text"
+              placeholder="Entrez le code secret..."
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                setError('')
+              }}
+              className="password-input"
+              autoFocus
+            />
+          </div>
+          
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+          
+          <button type="submit" className="validate-btn">
+            Valider
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+// COMPOSANT : Pop-up choix des points
+const PointsChoicePopup = ({ isOpen, onClose, standInfo, onSelectPoints }) => {
+  if (!isOpen || !standInfo) return null
+
+  return (
+    <div className="password-overlay">
+      <div className="password-popup points-choice-popup">
+        <div className="popup-header">
+          <img 
+            src={logoImage} 
+            alt="Logo INK" 
+            className="popup-logo"
+          />
+          <h2>{standInfo.name}</h2>
+          <button className="close-btn" onClick={onClose}>×</button>
+        </div>
+        
+        <div className="points-selection">
+          <h3>Choisissez vos points :</h3>
+          <div className="points-grid">
+            {standInfo.points.map((points) => (
+              <button
+                key={points}
+                className="points-btn"
+                onClick={() => onSelectPoints(points)}
+              >
+                {points} points
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 
 // COMPOSANT : Formulaire de participation
-const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, association, setAssociation, participateOnce, isLoading }) => (
+const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, association, setAssociation, onSubmitForm, isLoading }) => (
   <div className="container">
     <div className="animated-background">
       <BackgroundTrails />
@@ -36,7 +161,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
         <p className="subtitle">Laissez votre empreinte et gagnez des points</p>
       </div>
       
-      <form className="form-section" onSubmit={(e) => { e.preventDefault(); participateOnce(); }}>
+      <form className="form-section" onSubmit={(e) => { e.preventDefault(); onSubmitForm(); }}>
         <div className="input-group">
           <div className="floating-label">
             <input
@@ -413,7 +538,7 @@ const SecretRankingView = ({ users, associations, participantInfo, setShowSecret
             ← Retour
           </button>
           <h1 className="ranking-title centered-title">
-            {secretViewMode === 'users' ? 'Classement Participants' : 'Classement Associations'}
+            {secretViewMode === 'users' ? 'Classement Etudiants' : 'Classement Associations'}
           </h1>
           <img 
             src={logoImage} 
@@ -531,6 +656,10 @@ function App() {
   const [showSecretRanking, setShowSecretRanking] = useState(false)
   const [secretViewMode, setSecretViewMode] = useState('users') // 'users' ou 'associations'
   const [participantInfo, setParticipantInfo] = useState(null)
+  const [showPasswordPopup, setShowPasswordPopup] = useState(false)
+  const [showPointsChoice, setShowPointsChoice] = useState(false)
+  const [currentStandInfo, setCurrentStandInfo] = useState(null)
+  const [pendingPoints, setPendingPoints] = useState(0)
 
   // Vérifier si l'utilisateur a déjà participé dans cette session
   useEffect(() => {
@@ -542,15 +671,39 @@ function App() {
     }
   }, [])
 
-  // Participer une seule fois
-  const participateOnce = async () => {
-    console.log('🚀 Début participation - Email:', email, 'Nom:', nom, 'Prénom:', prenom, 'Association:', association)
-    
+  // Gestion du formulaire de participation
+  const handleFormSubmit = () => {
     if (!email || !nom || !prenom || !association) {
       alert('Veuillez remplir tous les champs (nom, prénom, email et association)')
       return
     }
+    setShowPasswordPopup(true)
+  }
 
+  // Validation du mot de passe
+  const handlePasswordValidation = (code, standInfo) => {
+    setShowPasswordPopup(false)
+    setCurrentStandInfo(standInfo)
+    
+    if (standInfo.points.length === 1) {
+      // Un seul choix de points, attribuer directement
+      participateWithPoints(standInfo.points[0])
+    } else {
+      // Plusieurs choix, afficher le pop-up de sélection
+      setShowPointsChoice(true)
+    }
+  }
+
+  // Sélection des points
+  const handlePointsSelection = (points) => {
+    setShowPointsChoice(false)
+    participateWithPoints(points)
+  }
+
+  // Participer avec un nombre de points spécifique
+  const participateWithPoints = async (points) => {
+    console.log('🚀 Début participation - Email:', email, 'Nom:', nom, 'Prénom:', prenom, 'Association:', association, 'Points:', points)
+    
     setIsLoading(true)
 
     try {
@@ -572,12 +725,12 @@ function App() {
       }
 
       if (existing) {
-        // Utilisateur existe déjà - ajoute 1 point et met à jour l'association
-        console.log('👤 Utilisateur trouvé, ajout de 1 point et mise à jour association...', existing)
+        // Utilisateur existe déjà - ajoute les points et met à jour l'association
+        console.log(`👤 Utilisateur trouvé, ajout de ${points} points et mise à jour association...`, existing)
         const { data: updateData, error: updateError } = await supabase
           .from('users')
           .update({ 
-            points: existing.points + 1,
+            points: existing.points + points,
             association_supportee: association
           })
           .eq('id', existing.id)
@@ -598,8 +751,9 @@ function App() {
           prenom: existing.prenom,
           email: existing.email,
           association: association,
-          points: existing.points + 1,
-          isNewUser: false
+          points: existing.points + points,
+          isNewUser: false,
+          earnedPoints: points
         }
         
         sessionStorage.setItem('hasParticipated', JSON.stringify(participantData))
@@ -607,15 +761,15 @@ function App() {
         setHasParticipated(true)
 
       } else {
-        // Nouvel utilisateur - créer avec 1 point
-        console.log('➕ Création nouvel utilisateur...')
+        // Nouvel utilisateur - créer avec les points
+        console.log(`➕ Création nouvel utilisateur avec ${points} points...`)
         const { data: insertData, error: insertError } = await supabase
           .from('users')
           .insert([{ 
             nom, 
             prenom, 
             email, 
-            points: 1, 
+            points: points, 
             association_supportee: association 
           }])
           .select()
@@ -635,8 +789,9 @@ function App() {
           prenom,
           email,
           association,
-          points: 1,
-          isNewUser: true
+          points: points,
+          isNewUser: true,
+          earnedPoints: points
         }
         
         sessionStorage.setItem('hasParticipated', JSON.stringify(participantData))
@@ -780,10 +935,23 @@ function App() {
           setEmail={setEmail}
           association={association}
           setAssociation={setAssociation}
-          participateOnce={participateOnce}
+          onSubmitForm={handleFormSubmit}
           isLoading={isLoading}
         />
       )}
+      
+      <PasswordPopup
+        isOpen={showPasswordPopup}
+        onClose={() => setShowPasswordPopup(false)}
+        onValidatePassword={handlePasswordValidation}
+      />
+      
+      <PointsChoicePopup
+        isOpen={showPointsChoice}
+        onClose={() => setShowPointsChoice(false)}
+        standInfo={currentStandInfo}
+        onSelectPoints={handlePointsSelection}
+      />
     </>
   )
 }
