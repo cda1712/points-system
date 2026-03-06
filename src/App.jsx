@@ -217,38 +217,38 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
             <datalist id="associations-list">
               <option value="AMMA" />
               <option value="ADA" />
-              <option value="Aviron" />
-              <option value="Club entrepreneurs" />
-              <option value="Comedia" />
+              <option value="AvironDeVinci" />
+              <option value="Club Entrepreneurs De Vinci" />
+              <option value="ComediaDaVinci" />
               <option value="Davincibot" />
               <option value="Davincicode" />
-              <option value="Junior Partners" />
-              <option value="Devdu" />
+              <option value="De Vinci Partners" />
+              <option value="De Vinci Durable" />
               <option value="Fablab" />
-              <option value="Devincitrip" />
-              <option value="Devincilumière" />
+              <option value="DeVinciTrip" />
+              <option value="DeVinciLumière" />
               <option value="Digiteam" />
               <option value="ESN" />
-              <option value="Étoile" />
+              <option value="ÉtoileDeVinci" />
               <option value="GOD" />
               <option value="Hydrovinci" />
-              <option value="Kryptosphère" />
-              <option value="Extreme" />
+              <option value="BlockChain De Vinci" />
+              <option value="L'Extreme De Vinci" />
               <option value="LDV Esport" />
               <option value="La 404" />
-              <option value="La Plume" />
-              <option value="La Joute" />
+              <option value="La Plume De Vinci" />
+              <option value="La Joute De Vinci" />
               <option value="LéoIndieGames" />
               <option value="Léosphère" />
               <option value="Léosurvival" />
               <option value="Léonart" />
-              <option value="Five" />
+              <option value="LeoFiveDeVinci" />
               <option value="LKW" />
-              <option value="Léorunning" />
-              <option value="Tactical" />
+              <option value="LéoRunning Club" />
+              <option value="LéoTactical" />
               <option value="Leo&co" />
               <option value="Léo4L" />
-              <option value="Léobasket" />
+              <option value="LéoBasket" />
               <option value="Léocook" />
               <option value="Léofly" />
               <option value="Léostunt" />
@@ -272,7 +272,6 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
               <option value="Vinci squad" />
               <option value="Lavague" />
               <option value="Léorugby" />
-              <option value="Végas" />
               <option value="IIMPACT" />
               <option value="Léolearning" />
               <option value="Virtual vinci" />
@@ -514,7 +513,7 @@ const AssociationsRanking = ({ associations, participantInfo, setShowAssociation
 )
 
 // COMPOSANT : Classement Secret (Alternance automatique)
-const SecretRankingView = ({ users, associations, participantInfo, setShowSecretRanking, secretViewMode }) => {
+const SecretRankingView = ({ users, associations, participantInfo, setShowSecretRanking, secretViewMode, onRefreshData }) => {
   // Gestion de la classe full-screen sur le body
   useEffect(() => {
     document.body.classList.add('secret-ranking-active')
@@ -522,6 +521,15 @@ const SecretRankingView = ({ users, associations, participantInfo, setShowSecret
       document.body.classList.remove('secret-ranking-active')
     }
   }, [])
+
+  // Actualisation automatique des données toutes les 3 secondes
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      onRefreshData()
+    }, 3000)
+
+    return () => clearInterval(refreshInterval)
+  }, [onRefreshData])
 
   return (
     <div className="container">
@@ -812,6 +820,12 @@ function App() {
     }
   }
 
+  // Fonction pour actualiser les données
+  const refreshData = () => {
+    fetchUsers()
+    fetchAssociations()
+  }
+
   // Récupérer tous les utilisateurs pour le classement
   const fetchUsers = async () => {
     const { data, error } = await supabase
@@ -906,6 +920,7 @@ function App() {
           participantInfo={participantInfo}
           setShowSecretRanking={setShowSecretRanking}
           secretViewMode={secretViewMode}
+          onRefreshData={refreshData}
         />
       ) : showRanking ? (
         <RankingView 
