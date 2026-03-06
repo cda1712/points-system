@@ -378,11 +378,21 @@ const ThankYouMessage = ({ participantInfo, setShowRanking, setShowAssociationRa
 )
 
 // COMPOSANT : Classement
-const RankingView = ({ users, participantInfo, setShowRanking }) => (
-  <div className="container">
-    <div className="animated-background">
-      <BackgroundTrails />
-    </div>
+const RankingView = ({ users, participantInfo, setShowRanking, onRefreshData }) => {
+  // Actualisation automatique des données toutes les 3 secondes
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      onRefreshData()
+    }, 3000)
+
+    return () => clearInterval(refreshInterval)
+  }, [onRefreshData])
+
+  return (
+    <div className="container">
+      <div className="animated-background">
+        <BackgroundTrails />
+      </div>
     
     <div className="ranking-card">
       <div className="ranking-header standard-ranking-header users-ranking-header">
@@ -442,14 +452,25 @@ const RankingView = ({ users, participantInfo, setShowRanking }) => (
       </div>
     </div>
   </div>
-)
+  )
+}
 
 // COMPOSANT : Classement des associations
-const AssociationsRanking = ({ associations, participantInfo, setShowAssociationRanking }) => (
-  <div className="container">
-    <div className="animated-background">
-      <BackgroundTrails />
-    </div>
+const AssociationsRanking = ({ associations, participantInfo, setShowAssociationRanking, onRefreshData }) => {
+  // Actualisation automatique des données toutes les 3 secondes
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      onRefreshData()
+    }, 3000)
+
+    return () => clearInterval(refreshInterval)
+  }, [onRefreshData])
+
+  return (
+    <div className="container">
+      <div className="animated-background">
+        <BackgroundTrails />
+      </div>
     
     <div className="ranking-card">
       <div className="ranking-header standard-ranking-header association-ranking-header">
@@ -510,7 +531,8 @@ const AssociationsRanking = ({ associations, participantInfo, setShowAssociation
       </div>
     </div>
   </div>
-)
+  )
+}
 
 // COMPOSANT : Classement Secret (Alternance automatique)
 const SecretRankingView = ({ users, associations, participantInfo, setShowSecretRanking, secretViewMode, onRefreshData }) => {
@@ -927,12 +949,14 @@ function App() {
           users={users}
           participantInfo={participantInfo}
           setShowRanking={setShowRanking}
+          onRefreshData={refreshData}
         />
       ) : showAssociationRanking ? (
         <AssociationsRanking 
           associations={associations}
           participantInfo={participantInfo}
           setShowAssociationRanking={setShowAssociationRanking}
+          onRefreshData={refreshData}
         />
       ) : hasParticipated ? (
         <ThankYouMessage 
