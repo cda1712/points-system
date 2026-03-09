@@ -73,7 +73,7 @@ const PasswordPopup = ({ isOpen, onClose, onValidatePassword }) => {
         <form onSubmit={handleSubmit} className="password-form">
           <div className="input-container">
             <input
-              type="text"
+              type="password"
               placeholder="Entrez le code secret..."
               value={password}
               onChange={(e) => {
