@@ -158,8 +158,8 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
             }}
           />
         </div>
-        <h1 className="main-title">Rejoignez notre aventure</h1>
-        <p className="subtitle">Laissez votre empreinte et gagnez des points</p>
+        <h1 className="main-title">Événement terminé !</h1>
+        <p className="subtitle">Merci à tous les participants ! Consultez les classements finaux.</p>
       </div>
       
       <form className="form-section" onSubmit={(e) => { e.preventDefault(); onSubmitForm(); }}>
@@ -172,7 +172,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
               value={nom}
               onChange={(e) => setNom(e.target.value)}
               className={`floating-input ${nom ? 'has-value' : ''}`}
-              required
+              disabled
             />
             <label htmlFor="nom" className="floating-label-text">Nom</label>
           </div>
@@ -185,7 +185,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
               value={prenom}
               onChange={(e) => setPrenom(e.target.value)}
               className={`floating-input ${prenom ? 'has-value' : ''}`}
-              required
+              disabled
             />
             <label htmlFor="prenom" className="floating-label-text">Prénom</label>
           </div>
@@ -198,7 +198,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={`floating-input ${email ? 'has-value' : ''}`}
-              required
+              disabled
             />
             <label htmlFor="email" className="floating-label-text">Email</label>
           </div>
@@ -213,7 +213,7 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
               className={`floating-input ${association ? 'has-value' : ''}`}
               list="associations-list"
               autoComplete="off"
-              required
+              disabled
             />
             <datalist id="associations-list">
               <option value="AMMA" />
@@ -283,11 +283,11 @@ const ParticipationForm = ({ nom, setNom, prenom, setPrenom, email, setEmail, as
 
         <button 
           type="submit"
-          disabled={isLoading}
-          className={`submit-btn ${isLoading ? 'loading' : ''}`}
+          disabled={true}
+          className="submit-btn disabled"
         >
           <span className="btn-text">
-            {isLoading ? 'Inscription en cours...' : 'Laisser mon empreinte'}
+            Événement terminé
           </span>
           <div className="ink-effect"></div>
         </button>
@@ -691,6 +691,9 @@ function App() {
   const [showPointsChoice, setShowPointsChoice] = useState(false)
   const [currentStandInfo, setCurrentStandInfo] = useState(null)
   const [pendingPoints, setPendingPoints] = useState(0)
+  
+  // ÉVÉNEMENT ARRÊTÉ - Plus d'ajout de points possible
+  const eventStopped = true
 
   // Vérifier si l'utilisateur a déjà participé dans cette session
   useEffect(() => {
@@ -704,6 +707,10 @@ function App() {
 
   // Gestion du formulaire de participation
   const handleFormSubmit = () => {
+    if (eventStopped) {
+      alert('L\'événement est terminé. Plus aucun point ne peut être ajouté.')
+      return
+    }
     if (!email || !nom || !prenom || !association) {
       alert('Veuillez remplir tous les champs (nom, prénom, email et association)')
       return
