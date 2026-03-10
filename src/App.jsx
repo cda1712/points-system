@@ -15,7 +15,8 @@ const STAND_CODES = {
   'InkTI': { name: 'Trouve l\'Intru – Focus Challenge', points: [100, 50] },
   'InkWP': { name: 'Waterpong: 3v3', points: [200, 100] },
   'InkCT': { name: 'Chamboule-tout', points: [300, 200, 100] },
-  'InkFI': { name: 'FRESQUE DE INK', points: [100] }
+  'InkFI': { name: 'FRESQUE DE INK', points: [100] },
+  'Fyt': { name: 'Fyt', points: [100] }
 }
 
 const BackgroundTrails = () => (
