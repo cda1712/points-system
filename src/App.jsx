@@ -907,6 +907,12 @@ function App() {
   useEffect(() => {
     fetchUsers()
     fetchAssociations()
+    // Mise à jour finale même si l'événement est arrêté
+    const finalRefresh = setTimeout(() => {
+      fetchUsers()
+      fetchAssociations()
+    }, 1000)
+    return () => clearTimeout(finalRefresh)
   }, [])
 
   // Raccourci clavier secret CTRL+ALT+T
